@@ -7,6 +7,13 @@
 # Unignore all dirs
 !*/
 
+# Ignore Debug and Release builds
+Debug/
+Release/
+
+# Ignore Visual Studio folders made while debugging
+.vs/
+
 CMakeLists.txt.user
 CMakeLists_modified.txt
 

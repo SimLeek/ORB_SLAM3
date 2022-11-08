@@ -19,6 +19,7 @@
 #ifndef TwoViewReconstruction_H
 #define TwoViewReconstruction_H
 
+#include "MultiPlatform.h"
 #include <opencv2/opencv.hpp>
 #include <Eigen/Core>
 #include <unordered_set>
@@ -28,7 +29,7 @@
 namespace ORB_SLAM3
 {
 
-    class TwoViewReconstruction
+    class DLLEXPORT TwoViewReconstruction
     {
         typedef std::pair<int,int> Match;
 

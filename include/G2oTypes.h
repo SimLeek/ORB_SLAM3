@@ -19,11 +19,11 @@
 #ifndef G2OTYPES_H
 #define G2OTYPES_H
 
-#include "Thirdparty/g2o/g2o/core/base_vertex.h"
-#include "Thirdparty/g2o/g2o/core/base_binary_edge.h"
-#include "Thirdparty/g2o/g2o/types/types_sba.h"
-#include "Thirdparty/g2o/g2o/core/base_multi_edge.h"
-#include "Thirdparty/g2o/g2o/core/base_unary_edge.h"
+#include "g2o/core/base_vertex.h"
+#include "g2o/core/base_binary_edge.h"
+#include "g2o/types/sba/types_sba.h"
+#include "g2o/core/base_multi_edge.h"
+#include "g2o/core/base_unary_edge.h"
 
 #include<opencv2/core/core.hpp>
 
@@ -36,6 +36,7 @@
 
 #include"Converter.h"
 #include <math.h>
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
@@ -52,17 +53,17 @@ typedef Eigen::Matrix<double, 12, 12> Matrix12d;
 typedef Eigen::Matrix<double, 15, 15> Matrix15d;
 typedef Eigen::Matrix<double, 9, 9> Matrix9d;
 
-Eigen::Matrix3d ExpSO3(const double x, const double y, const double z);
-Eigen::Matrix3d ExpSO3(const Eigen::Vector3d &w);
+DLLEXPORT Eigen::Matrix3d ExpSO3(const double x, const double y, const double z);
+DLLEXPORT Eigen::Matrix3d ExpSO3(const Eigen::Vector3d &w);
 
-Eigen::Vector3d LogSO3(const Eigen::Matrix3d &R);
+DLLEXPORT Eigen::Vector3d LogSO3(const Eigen::Matrix3d &R);
 
-Eigen::Matrix3d InverseRightJacobianSO3(const Eigen::Vector3d &v);
-Eigen::Matrix3d RightJacobianSO3(const Eigen::Vector3d &v);
-Eigen::Matrix3d RightJacobianSO3(const double x, const double y, const double z);
+DLLEXPORT Eigen::Matrix3d InverseRightJacobianSO3(const Eigen::Vector3d &v);
+DLLEXPORT Eigen::Matrix3d RightJacobianSO3(const Eigen::Vector3d &v);
+DLLEXPORT Eigen::Matrix3d RightJacobianSO3(const double x, const double y, const double z);
 
-Eigen::Matrix3d Skew(const Eigen::Vector3d &w);
-Eigen::Matrix3d InverseRightJacobianSO3(const double x, const double y, const double z);
+DLLEXPORT Eigen::Matrix3d Skew(const Eigen::Vector3d &w);
+DLLEXPORT Eigen::Matrix3d InverseRightJacobianSO3(const double x, const double y, const double z);
 
 template<typename T = double>
 Eigen::Matrix<T,3,3> NormalizeRotation(const Eigen::Matrix<T,3,3> &R) {
@@ -71,7 +72,7 @@ Eigen::Matrix<T,3,3> NormalizeRotation(const Eigen::Matrix<T,3,3> &R) {
 }
 
 
-class ImuCamPose
+class DLLEXPORT ImuCamPose
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -109,7 +110,7 @@ public:
     int its;
 };
 
-class InvDepthPoint
+class DLLEXPORT InvDepthPoint
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -127,7 +128,7 @@ public:
 };
 
 // Optimizable parameters are IMU pose
-class VertexPose : public g2o::BaseVertex<6,ImuCamPose>
+class DLLEXPORT VertexPose : public g2o::BaseVertex<6,ImuCamPose>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -152,7 +153,7 @@ public:
     }
 };
 
-class VertexPose4DoF : public g2o::BaseVertex<4,ImuCamPose>
+class DLLEXPORT VertexPose4DoF : public g2o::BaseVertex<4,ImuCamPose>
 {
     // Translation and yaw are the only optimizable variables
 public:
@@ -188,7 +189,7 @@ public:
     }
 };
 
-class VertexVelocity : public g2o::BaseVertex<3,Eigen::Vector3d>
+class DLLEXPORT VertexVelocity : public g2o::BaseVertex<3,Eigen::Vector3d>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -209,7 +210,7 @@ public:
     }
 };
 
-class VertexGyroBias : public g2o::BaseVertex<3,Eigen::Vector3d>
+class DLLEXPORT VertexGyroBias : public g2o::BaseVertex<3,Eigen::Vector3d>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -231,7 +232,7 @@ public:
 };
 
 
-class VertexAccBias : public g2o::BaseVertex<3,Eigen::Vector3d>
+class DLLEXPORT VertexAccBias : public g2o::BaseVertex<3,Eigen::Vector3d>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -254,7 +255,7 @@ public:
 
 
 // Gravity direction vertex
-class GDirection
+class DLLEXPORT GDirection
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -271,7 +272,7 @@ public:
     int its;
 };
 
-class VertexGDir : public g2o::BaseVertex<2,GDirection>
+class DLLEXPORT VertexGDir : public g2o::BaseVertex<2,GDirection>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -293,7 +294,7 @@ public:
 };
 
 // scale vertex
-class VertexScale : public g2o::BaseVertex<1,double>
+class DLLEXPORT VertexScale : public g2o::BaseVertex<1,double>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -318,7 +319,7 @@ public:
 
 
 // Inverse depth point (just one parameter, inverse depth at the host frame)
-class VertexInvDepth : public g2o::BaseVertex<1,InvDepthPoint>
+class DLLEXPORT VertexInvDepth : public g2o::BaseVertex<1,InvDepthPoint>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -339,7 +340,7 @@ public:
     }
 };
 
-class EdgeMono : public g2o::BaseBinaryEdge<2,Eigen::Vector2d,g2o::VertexSBAPointXYZ,VertexPose>
+class DLLEXPORT EdgeMono : public g2o::BaseBinaryEdge<2,Eigen::Vector2d,g2o::VertexSBAPointXYZ,VertexPose>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -387,7 +388,7 @@ public:
     const int cam_idx;
 };
 
-class EdgeMonoOnlyPose : public g2o::BaseUnaryEdge<2,Eigen::Vector2d,VertexPose>
+class DLLEXPORT EdgeMonoOnlyPose : public g2o::BaseUnaryEdge<2,Eigen::Vector2d,VertexPose>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -422,7 +423,7 @@ public:
     const int cam_idx;
 };
 
-class EdgeStereo : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,g2o::VertexSBAPointXYZ,VertexPose>
+class DLLEXPORT EdgeStereo : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,g2o::VertexSBAPointXYZ,VertexPose>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -463,7 +464,7 @@ public:
 };
 
 
-class EdgeStereoOnlyPose : public g2o::BaseUnaryEdge<3,Eigen::Vector3d,VertexPose>
+class DLLEXPORT EdgeStereoOnlyPose : public g2o::BaseUnaryEdge<3,Eigen::Vector3d,VertexPose>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -492,7 +493,7 @@ public:
     const int cam_idx;
 };
 
-class EdgeInertial : public g2o::BaseMultiEdge<9,Vector9d>
+class DLLEXPORT EdgeInertial : public g2o::BaseMultiEdge<9,Vector9d>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -545,7 +546,7 @@ public:
 
 
 // Edge inertial whre gravity is included as optimizable variable and it is not supposed to be pointing in -z axis, as well as scale
-class EdgeInertialGS : public g2o::BaseMultiEdge<9,Vector9d>
+class DLLEXPORT EdgeInertialGS : public g2o::BaseMultiEdge<9,Vector9d>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -632,7 +633,7 @@ public:
 
 
 
-class EdgeGyroRW : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,VertexGyroBias,VertexGyroBias>
+class DLLEXPORT EdgeGyroRW : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,VertexGyroBias,VertexGyroBias>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -668,7 +669,7 @@ public:
 };
 
 
-class EdgeAccRW : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,VertexAccBias,VertexAccBias>
+class DLLEXPORT EdgeAccRW : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,VertexAccBias,VertexAccBias>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -703,7 +704,7 @@ public:
     }
 };
 
-class ConstraintPoseImu
+class DLLEXPORT ConstraintPoseImu
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -729,7 +730,7 @@ public:
     Matrix15d H;
 };
 
-class EdgePriorPoseImu : public g2o::BaseMultiEdge<15,Vector15d>
+class DLLEXPORT EdgePriorPoseImu : public g2o::BaseMultiEdge<15,Vector15d>
 {
 public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -765,7 +766,7 @@ public:
 };
 
 // Priors for biases
-class EdgePriorAcc : public g2o::BaseUnaryEdge<3,Eigen::Vector3d,VertexAccBias>
+class DLLEXPORT EdgePriorAcc : public g2o::BaseUnaryEdge<3,Eigen::Vector3d,VertexAccBias>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -789,7 +790,7 @@ public:
     const Eigen::Vector3d bprior;
 };
 
-class EdgePriorGyro : public g2o::BaseUnaryEdge<3,Eigen::Vector3d,VertexGyroBias>
+class DLLEXPORT EdgePriorGyro : public g2o::BaseUnaryEdge<3,Eigen::Vector3d,VertexGyroBias>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -814,7 +815,7 @@ public:
 };
 
 
-class Edge4DoF : public g2o::BaseBinaryEdge<6,Vector6d,VertexPose4DoF,VertexPose4DoF>
+class DLLEXPORT Edge4DoF : public g2o::BaseBinaryEdge<6,Vector6d,VertexPose4DoF,VertexPose4DoF>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW

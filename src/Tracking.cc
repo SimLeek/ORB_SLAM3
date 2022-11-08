@@ -1671,7 +1671,8 @@ void Tracking::PreintegrateIMU()
             }
         }
         if(bSleep)
-            usleep(500);
+            std::this_thread::sleep_for(std::chrono::microseconds(500)); // usleep(500);
+            
     }
 
     const int n = mvImuFromLastFrame.size()-1;
@@ -1798,7 +1799,7 @@ void Tracking::Track()
     {
         std::cout << "Tracking: Waiting to the next step" << std::endl;
         while(!mbStep && bStepByStep)
-            usleep(500);
+            std::this_thread::sleep_for(std::chrono::microseconds(500)); // usleep(500);
         mbStep = false;
     }
 
@@ -3528,57 +3529,58 @@ void Tracking::UpdateLocalKeyFrames()
         pKF->mnTrackReferenceForFrame = mCurrentFrame.mnId;
     }
 
-    // Include also some not-already-included keyframes that are neighbors to already-included keyframes
-    for(vector<KeyFrame*>::const_iterator itKF=mvpLocalKeyFrames.begin(), itEndKF=mvpLocalKeyFrames.end(); itKF!=itEndKF; itKF++)
-    {
+    int i = 0;
+    while (i < mvpLocalKeyFrames.size()) {
+        // Include also some not-already-included keyframes that are neighbors to already-included keyframes
         // Limit the number of keyframes
-        if(mvpLocalKeyFrames.size()>80) // 80
+        if (mvpLocalKeyFrames.size() > 80) // 80
             break;
 
-        KeyFrame* pKF = *itKF;
+        KeyFrame* pKF = mvpLocalKeyFrames[i];
 
         const vector<KeyFrame*> vNeighs = pKF->GetBestCovisibilityKeyFrames(10);
 
-
-        for(vector<KeyFrame*>::const_iterator itNeighKF=vNeighs.begin(), itEndNeighKF=vNeighs.end(); itNeighKF!=itEndNeighKF; itNeighKF++)
+        for (vector<KeyFrame*>::const_iterator itNeighKF = vNeighs.begin(), itEndNeighKF = vNeighs.end(); itNeighKF != itEndNeighKF; itNeighKF++)
         {
             KeyFrame* pNeighKF = *itNeighKF;
-            if(!pNeighKF->isBad())
+            if (!pNeighKF->isBad())
             {
-                if(pNeighKF->mnTrackReferenceForFrame!=mCurrentFrame.mnId)
+                if (pNeighKF->mnTrackReferenceForFrame != mCurrentFrame.mnId)
                 {
                     mvpLocalKeyFrames.push_back(pNeighKF);
-                    pNeighKF->mnTrackReferenceForFrame=mCurrentFrame.mnId;
+                    pNeighKF->mnTrackReferenceForFrame = mCurrentFrame.mnId;
                     break;
                 }
             }
         }
 
         const set<KeyFrame*> spChilds = pKF->GetChilds();
-        for(set<KeyFrame*>::const_iterator sit=spChilds.begin(), send=spChilds.end(); sit!=send; sit++)
+        for (set<KeyFrame*>::const_iterator sit = spChilds.begin(), send = spChilds.end(); sit != send; sit++)
         {
             KeyFrame* pChildKF = *sit;
-            if(!pChildKF->isBad())
+            if (!pChildKF->isBad())
             {
-                if(pChildKF->mnTrackReferenceForFrame!=mCurrentFrame.mnId)
+                if (pChildKF->mnTrackReferenceForFrame != mCurrentFrame.mnId)
                 {
                     mvpLocalKeyFrames.push_back(pChildKF);
-                    pChildKF->mnTrackReferenceForFrame=mCurrentFrame.mnId;
+                    pChildKF->mnTrackReferenceForFrame = mCurrentFrame.mnId;
                     break;
                 }
             }
         }
 
         KeyFrame* pParent = pKF->GetParent();
-        if(pParent)
+        if (pParent)
         {
-            if(pParent->mnTrackReferenceForFrame!=mCurrentFrame.mnId)
+            if (pParent->mnTrackReferenceForFrame != mCurrentFrame.mnId)
             {
                 mvpLocalKeyFrames.push_back(pParent);
-                pParent->mnTrackReferenceForFrame=mCurrentFrame.mnId;
+                pParent->mnTrackReferenceForFrame = mCurrentFrame.mnId;
                 break;
             }
         }
+
+        i++;
     }
 
     // Add 10 last temporal KFs (mainly for IMU)
@@ -3784,7 +3786,7 @@ void Tracking::Reset(bool bLocMap)
     {
         mpViewer->RequestStop();
         while(!mpViewer->isStopped())
-            usleep(3000);
+            std::this_thread::sleep_for(std::chrono::microseconds(3000)); // usleep(3000);
     }
 
     // Reset Local Mapping
@@ -3844,7 +3846,7 @@ void Tracking::ResetActiveMap(bool bLocMap)
     {
         mpViewer->RequestStop();
         while(!mpViewer->isStopped())
-            usleep(3000);
+        std::this_thread::sleep_for(std::chrono::microseconds(3000)); // usleep(3000);
     }
 
     Map* pMap = mpAtlas->GetCurrentMap();
@@ -4010,7 +4012,7 @@ void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, KeyFrame* pCurr
 
     while(!mCurrentFrame.imuIsPreintegrated())
     {
-        usleep(500);
+        std::this_thread::sleep_for(std::chrono::microseconds(500)); // usleep(500);
     }
 
 

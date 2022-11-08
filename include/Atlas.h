@@ -30,7 +30,7 @@
 #include <mutex>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/export.hpp>
-
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
@@ -46,7 +46,7 @@ class Pinhole;
 //BOOST_CLASS_EXPORT_GUID(Pinhole, "Pinhole")
 //BOOST_CLASS_EXPORT_GUID(KannalaBrandt8, "KannalaBrandt8")
 
-class Atlas
+class DLLEXPORT Atlas
 {
     friend class boost::serialization::access;
 
@@ -105,7 +105,7 @@ public:
     std::vector<MapPoint*> GetAllMapPoints();
     std::vector<MapPoint*> GetReferenceMapPoints();
 
-    vector<Map*> GetAllMaps();
+    std::vector<Map*> GetAllMaps();
 
     int CountMaps();
 
@@ -127,7 +127,7 @@ public:
     void PreSave();
     void PostLoad();
 
-    map<long unsigned int, KeyFrame*> GetAtlasKeyframes();
+    std::map<long unsigned int, KeyFrame*> GetAtlasKeyframes();
 
     void SetKeyFrameDababase(KeyFrameDatabase* pKFDB);
     KeyFrameDatabase* GetKeyFrameDatabase();

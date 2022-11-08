@@ -28,7 +28,7 @@
 #include <mutex>
 
 #include <boost/serialization/base_object.hpp>
-
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
@@ -38,7 +38,7 @@ class KeyFrame;
 class Atlas;
 class KeyFrameDatabase;
 
-class Map
+class DLLEXPORT Map
 {
     friend class boost::serialization::access;
 
@@ -131,12 +131,12 @@ public:
     unsigned int GetLowerKFID();
 
     void PreSave(std::set<GeometricCamera*> &spCams);
-    void PostLoad(KeyFrameDatabase* pKFDB, ORBVocabulary* pORBVoc/*, map<long unsigned int, KeyFrame*>& mpKeyFrameId*/, map<unsigned int, GeometricCamera*> &mpCams);
+    void PostLoad(KeyFrameDatabase* pKFDB, ORBVocabulary* pORBVoc/*, map<long unsigned int, KeyFrame*>& mpKeyFrameId*/, std::map<unsigned int, GeometricCamera*> &mpCams);
 
-    void printReprojectionError(list<KeyFrame*> &lpLocalWindowKFs, KeyFrame* mpCurrentKF, string &name, string &name_folder);
+    void printReprojectionError(std::list<KeyFrame*> &lpLocalWindowKFs, KeyFrame* mpCurrentKF, std::string &name, std::string &name_folder);
 
-    vector<KeyFrame*> mvpKeyFrameOrigins;
-    vector<unsigned long int> mvBackupKeyFrameOriginsId;
+    std::vector<KeyFrame*> mvpKeyFrameOrigins;
+    std::vector<unsigned long int> mvBackupKeyFrameOriginsId;
     KeyFrame* mpFirstRegionKF;
     std::mutex mMutexMapUpdate;
 

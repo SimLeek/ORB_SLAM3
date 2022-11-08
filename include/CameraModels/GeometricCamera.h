@@ -38,9 +38,10 @@
 
 #include "Converter.h"
 #include "GeometricTools.h"
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3 {
-    class GeometricCamera {
+    class DLLEXPORT GeometricCamera {
 
         friend class boost::serialization::access;
 

@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "filesystem": "cpp",
+        "bitset": "cpp",
+        "set": "cpp",
+        "*.ipp": "cpp"
+    },
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE" : "C:/Users/${env:USERNAME}/code/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    },
+}

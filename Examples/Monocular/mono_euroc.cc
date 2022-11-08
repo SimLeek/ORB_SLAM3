@@ -23,7 +23,7 @@
 
 #include<opencv2/core/core.hpp>
 
-#include<System.h>
+#include <System.h>
 
 using namespace std;
 
@@ -128,22 +128,13 @@ int main(int argc, char **argv)
                 SLAM.InsertResizeTime(t_resize);
 #endif
             }
-
-    #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-    #else
-            std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
-    #endif
 
             // Pass the image to the SLAM system
             // cout << "tframe = " << tframe << endl;
             SLAM.TrackMonocular(im,tframe); // TODO change to monocular_inertial
 
-    #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
-    #else
-            std::chrono::monotonic_clock::time_point t2 = std::chrono::monotonic_clock::now();
-    #endif
 
 #ifdef REGISTER_TIMES
             t_track = t_resize + std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t2 - t1).count();
@@ -166,7 +157,7 @@ int main(int argc, char **argv)
 
             if(ttrack<T) {
                 //std::cout << "usleep: " << (dT-ttrack) << std::endl;
-                usleep((T-ttrack)*1e6); // 1e6
+                std::this_thread::sleep_for(std::chrono::milliseconds((long)((T-ttrack)*1e3))); //usleep((T-ttrack)*1e6);
             }
         }
 

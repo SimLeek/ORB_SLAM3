@@ -24,9 +24,10 @@
 #include "GeometricCamera.h"
 
 #include "TwoViewReconstruction.h"
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3 {
-    class Pinhole : public GeometricCamera {
+    class DLLEXPORT Pinhole : public GeometricCamera {
 
     friend class boost::serialization::access;
 

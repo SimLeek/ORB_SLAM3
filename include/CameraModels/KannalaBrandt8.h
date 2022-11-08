@@ -25,9 +25,10 @@
 #include "GeometricCamera.h"
 
 #include "TwoViewReconstruction.h"
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3 {
-    class KannalaBrandt8 : public GeometricCamera {
+    class DLLEXPORT KannalaBrandt8 : public GeometricCamera {
 
     friend class boost::serialization::access;
 

@@ -24,8 +24,9 @@
 //#define REGISTER_TIMES
 
 #include "CameraModels/GeometricCamera.h"
+#include "MultiPlatform.h"
 
-#include <unistd.h>
+//#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -36,7 +37,7 @@ namespace ORB_SLAM3 {
 
     //TODO: change to double instead of float
 
-    class Settings {
+    class DLLEXPORT Settings {
     public:
         /*
          * Enum for the different camera types implemented

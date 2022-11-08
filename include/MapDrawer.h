@@ -25,6 +25,7 @@
 #include"KeyFrame.h"
 #include "Settings.h"
 #include<pangolin/pangolin.h>
+#include "MultiPlatform.h"
 
 #include<mutex>
 
@@ -33,11 +34,11 @@ namespace ORB_SLAM3
 
 class Settings;
 
-class MapDrawer
+class DLLEXPORT MapDrawer
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    MapDrawer(Atlas* pAtlas, const string &strSettingPath, Settings* settings);
+    MapDrawer(Atlas* pAtlas, const std::string &strSettingPath, Settings* settings);
 
     void newParameterLoader(Settings* settings);
 

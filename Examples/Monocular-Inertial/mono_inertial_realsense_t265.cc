@@ -67,6 +67,9 @@ int main(int argc, char **argv)
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_MONOCULAR, true, 0, file_name);
     float imageScale = SLAM.GetImageScale();
 
+    #ifdef _WIN32
+    signal(SIGINT, exit_loop_handler);
+    #else
     struct sigaction sigIntHandler;
 
     sigIntHandler.sa_handler = exit_loop_handler;
@@ -74,6 +77,7 @@ int main(int argc, char **argv)
     sigIntHandler.sa_flags = 0;
 
     sigaction(SIGINT, &sigIntHandler, NULL);
+    #endif
     b_continue_session = true;
 
     double offset = 0; // ms

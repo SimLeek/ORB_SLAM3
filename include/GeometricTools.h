@@ -23,13 +23,15 @@
 #include <opencv2/core/core.hpp>
 #include <sophus/se3.hpp>
 #include <Eigen/Core>
+#include <iostream>
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
 
 class KeyFrame;
 
-class GeometricTools
+class DLLEXPORT GeometricTools
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW

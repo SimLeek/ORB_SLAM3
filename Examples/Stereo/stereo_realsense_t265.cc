@@ -59,6 +59,9 @@ int main(int argc, char **argv)
         bFileName = true;
     }
 
+    #ifdef _WIN32
+    signal(SIGINT, exit_loop_handler);
+    #else
     struct sigaction sigIntHandler;
 
     sigIntHandler.sa_handler = exit_loop_handler;
@@ -66,6 +69,7 @@ int main(int argc, char **argv)
     sigIntHandler.sa_flags = 0;
 
     sigaction(SIGINT, &sigIntHandler, NULL);
+    #endif
     b_continue_session = true;
 
 

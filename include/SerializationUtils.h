@@ -19,6 +19,9 @@
 #ifndef SERIALIZATION_UTILS_H
 #define SERIALIZATION_UTILS_H
 
+#include "DBoW2/BowVector.h"
+#include "DBoW2/FeatureVector.h"
+
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/vector.hpp>
 
@@ -96,6 +99,60 @@ void serializeMatrix(Archive& ar, cv::Mat& mat, const unsigned int version)
         const unsigned int row_size = cols*mat.elemSize();
         for (int i = 0; i < rows; i++) {
             ar & boost::serialization::make_array(mat.ptr(i), row_size);
+        }
+    }
+}
+
+template<class Archive>
+void serializeBowVector(Archive& ar, DBoW2::BowVector& bv, const unsigned int version)
+{
+    //need to split apart the bow vector, because for some reason boost won't recognize it as a map
+    // and for whatever reason, I can't just convert them to maps
+
+    std::vector<DBoW2::WordId> keys;
+    std::vector<DBoW2::WordValue> values;
+
+    if (Archive::is_saving::value) {
+        for (auto const& x : bv)
+        {
+            keys.push_back(x.first);
+            values.push_back(x.second);
+        }
+    }
+
+    ar & keys & values;
+
+    if (Archive::is_loading::value)
+    {
+        for(unsigned int i = 0; i < keys.size(); i++) {
+            bv[keys[i]] = values[i];
+        }
+    }
+}
+
+template<class Archive>
+void serializeFeatureVector(Archive& ar, DBoW2::FeatureVector& fv, const unsigned int version)
+{
+    //need to split apart the bow vector, because for some reason boost won't recognize it as a map
+    // and for whatever reason, I can't just convert them to maps
+
+    std::vector<DBoW2::NodeId> keys;
+    std::vector<std::vector<unsigned int>> values;
+
+    if (Archive::is_saving::value) {
+        for (auto const& x : fv)
+        {
+            keys.push_back(x.first);
+            values.push_back(x.second);
+        }
+    }
+
+    ar & keys & values;
+
+    if (Archive::is_loading::value)
+    {
+        for(unsigned int i = 0; i < keys.size(); i++) {
+            fv[keys[i]] = values[i];
         }
     }
 }

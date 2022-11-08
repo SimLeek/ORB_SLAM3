@@ -34,6 +34,9 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/vector.hpp>
 
+#include <iostream>
+#include "MultiPlatform.h"
+
 namespace ORB_SLAM3
 {
 
@@ -43,7 +46,7 @@ namespace IMU
 const float GRAVITY_VALUE=9.81;
 
 //IMU measurement (gyro, accelerometer and timestamp)
-class Point
+class DLLEXPORT Point
 {
 public:
     Point(const float &acc_x, const float &acc_y, const float &acc_z,
@@ -59,7 +62,7 @@ public:
 };
 
 //IMU biases (gyro and accelerometer)
-class Bias
+class DLLEXPORT Bias
 {
     friend class boost::serialization::access;
     template<class Archive>
@@ -89,7 +92,7 @@ public:
 };
 
 //IMU calibration (Tbc, Tcb, noise)
-class Calib
+class DLLEXPORT Calib
 {
     friend class boost::serialization::access;
     template<class Archive>
@@ -126,7 +129,7 @@ public:
 };
 
 //Integration of 1 gyro measurement
-class IntegratedRotation
+class DLLEXPORT IntegratedRotation
 {
 public:
     IntegratedRotation(){}
@@ -140,7 +143,7 @@ public:
 };
 
 //Preintegration of Imu Measurements
-class Preintegrated
+class DLLEXPORT Preintegrated
 {
     friend class boost::serialization::access;
     template<class Archive>
@@ -251,13 +254,13 @@ private:
 };
 
 // Lie Algebra Functions
-Eigen::Matrix3f RightJacobianSO3(const float &x, const float &y, const float &z);
-Eigen::Matrix3f RightJacobianSO3(const Eigen::Vector3f &v);
+DLLEXPORT Eigen::Matrix3f RightJacobianSO3(const float &x, const float &y, const float &z);
+DLLEXPORT Eigen::Matrix3f RightJacobianSO3(const Eigen::Vector3f &v);
 
-Eigen::Matrix3f InverseRightJacobianSO3(const float &x, const float &y, const float &z);
-Eigen::Matrix3f InverseRightJacobianSO3(const Eigen::Vector3f &v);
+DLLEXPORT Eigen::Matrix3f InverseRightJacobianSO3(const float &x, const float &y, const float &z);
+DLLEXPORT Eigen::Matrix3f InverseRightJacobianSO3(const Eigen::Vector3f &v);
 
-Eigen::Matrix3f NormalizeRotation(const Eigen::Matrix3f &R);
+DLLEXPORT Eigen::Matrix3f NormalizeRotation(const Eigen::Matrix3f &R);
 
 }
 

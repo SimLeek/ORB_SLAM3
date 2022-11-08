@@ -105,6 +105,9 @@ int main(int argc, char **argv) {
         file_name = string(argv[argc - 1]);
     }
 
+    #ifdef _WIN32
+    signal(SIGINT, exit_loop_handler);
+    #else
     struct sigaction sigIntHandler;
 
     sigIntHandler.sa_handler = exit_loop_handler;
@@ -112,6 +115,7 @@ int main(int argc, char **argv) {
     sigIntHandler.sa_flags = 0;
 
     sigaction(SIGINT, &sigIntHandler, NULL);
+    #endif
     b_continue_session = true;
 
     double offset = 0; // ms
@@ -228,11 +232,7 @@ int main(int argc, char **argv) {
             if(!image_ready)
                 cond_image_rec.wait(lk);
 
-#ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point time_Start_Process = std::chrono::steady_clock::now();
-#else
-            std::chrono::monotonic_clock::time_point time_Start_Process = std::chrono::monotonic_clock::now();
-#endif
 
             if(count_im_buffer>1)
                 cout << count_im_buffer -1 << " dropped frs\n";

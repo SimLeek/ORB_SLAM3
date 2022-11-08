@@ -34,6 +34,8 @@
 #include <librealsense2/rs.hpp>
 #include "librealsense2/rsutil.h"
 
+#include <System.h>
+
 using namespace std;
 
 bool b_continue_session;
@@ -97,14 +99,17 @@ int main(int argc, char **argv) {
 
     string directory = string(argv[argc - 1]);
 
+    #ifdef _WIN32
+    signal(SIGINT, exit_loop_handler);
+    #else
     struct sigaction sigIntHandler;
-
 
     sigIntHandler.sa_handler = exit_loop_handler;
     sigemptyset(&sigIntHandler.sa_mask);
     sigIntHandler.sa_flags = 0;
 
     sigaction(SIGINT, &sigIntHandler, NULL);
+    #endif
     b_continue_session = true;
 
     double offset = 0; // ms

@@ -33,6 +33,7 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/map.hpp>
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
@@ -41,7 +42,7 @@ class KeyFrame;
 class Map;
 class Frame;
 
-class MapPoint
+class DLLEXPORT MapPoint
 {
 
     friend class boost::serialization::access;
@@ -157,8 +158,8 @@ public:
 
     void PrintObservations();
 
-    void PreSave(set<KeyFrame*>& spKF,set<MapPoint*>& spMP);
-    void PostLoad(map<long unsigned int, KeyFrame*>& mpKFid, map<long unsigned int, MapPoint*>& mpMPid);
+    void PreSave(std::set<KeyFrame*>& spKF,std::set<MapPoint*>& spMP);
+    void PostLoad(std::map<long unsigned int, KeyFrame*>& mpKFid, std::map<long unsigned int, MapPoint*>& mpMPid);
 
 public:
     long unsigned int mnId;

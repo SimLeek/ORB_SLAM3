@@ -19,36 +19,38 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <unistd.h>
+//unnecessary in c++17 or higher, and we're using c++20:
+//#include <unistd.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
 
-class ViewerConfig
+class DLLEXPORT ViewerConfig
 {
 
 };
 
-class CameraConfig
+class DLLEXPORT CameraConfig
 {
 
 };
 
-class ORBExtractorConfig
+class DLLEXPORT ORBExtractorConfig
 {
 
 };
 
-class IMUConfig
+class DLLEXPORT IMUConfig
 {
 
 };
 
-class ConfigParser
+class DLLEXPORT ConfigParser
 {
 public:
     bool ParseConfigFile(std::string &strConfigFile);

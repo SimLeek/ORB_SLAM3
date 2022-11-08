@@ -22,12 +22,12 @@
 #include <vector>
 #include <list>
 #include <opencv2/opencv.hpp>
-
+#include "MultiPlatform.h"
 
 namespace ORB_SLAM3
 {
 
-class ExtractorNode
+class DLLEXPORT ExtractorNode
 {
 public:
     ExtractorNode():bNoMore(false){}
@@ -40,7 +40,7 @@ public:
     bool bNoMore;
 };
 
-class ORBextractor
+class DLLEXPORT ORBextractor
 {
 public:
     
