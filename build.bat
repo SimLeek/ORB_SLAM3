@@ -6,48 +6,30 @@ IF %ERRORLEVEL% NEQ 0 (
     EXIT /B -1
 )
 
-
-IF NOT EXIST "C:\Program Files\7-Zip\7z.exe" (
-    ECHO 7z wasn't found 
+if "%~1"=="" goto blank
+vcpkg = "%~1"
+goto endif1
+blank:
+WHERE vcpkg
+IF %ERRORLEVEL% NEQ 0 (
+    ECHO vcpkg wasn't found. Please add location as argument or download vcpkg.
     EXIT /B -1
 )
+endif1:
 
-echo "Configuring and building Thirdparty/DBoW2 ..."
+echo installing 
 
-cd Thirdparty/DBoW2
+vcpkg install pangolin pangolin:x64-windows boost boost:x64-windows openssl openssl:x64-windows opencv opencv:x64-windows dlib dlib:x64-windows
+
+echo "Configuring and building Thirdparty libraries ..."
+
+cd Thirdparty
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . -j
 
-cd ../../g2o
-
-echo "Configuring and building Thirdparty/g2o ..."
-
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . -j
-
-cd ../../Sophus
-
-echo "Configuring and building Thirdparty/Sophus ..."
-
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . -j
-
-cd ../../../
-
-rem Uncompressing vocabulary is no longer necessary with latest DBOW2. Also, DBOW2 seems to have deprecated the older format, so that's deleted anyway.
-rem echo "Uncompress vocabulary ..."
-
-rem cd Vocabulary
-rem "C:\Program Files\7-Zip\7z.exe" x "ORBvoc.txt.tar.gz" -so | "C:\Program Files\7-Zip\7z.exe" x -si -ttar
-rem cd ..
-
-echo "Configuring and building ORB_SLAM3 ..."
+cd ../
 
 mkdir build
 cd build

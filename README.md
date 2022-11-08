@@ -51,22 +51,13 @@ If you use ORB-SLAM3 in an academic work, please cite:
      }
 
 # 2. Prerequisites
-We have tested the library in **Ubuntu 16.04** and **18.04**, but it should be easy to compile in other platforms. A powerful computer (e.g. i7) will ensure real-time performance and provide more stable and accurate results.
+The library has now been tested in **Ubuntu 16.04**, **18.04**, and **Windows 11**. However, it currently requires a powerful CPU in order to process everything in real-time, even with small frame sizes such as 320x240.
 
-## C++11 or C++0x Compiler
-We use the new thread and chrono functionalities of C++11.
+## C++11 Compiler
+Compilers that don't support C++11 are deprecated.
 
-## Pangolin
-We use [Pangolin](https://github.com/stevenlovegrove/Pangolin) for visualization and user interface. Dowload and install instructions can be found at: https://github.com/stevenlovegrove/Pangolin.
-
-## OpenCV
-We use [OpenCV](http://opencv.org) to manipulate images and features. Dowload and install instructions can be found at: http://opencv.org. **Required at leat 3.0. Tested with OpenCV 3.2.0 and 4.4.0**.
-
-## Eigen3
-Required by g2o (see below). Download and install instructions can be found at: http://eigen.tuxfamily.org. **Required at least 3.1.0**.
-
-## DBoW2 and g2o (Included in Thirdparty folder)
-We use modified versions of the [DBoW2](https://github.com/dorian3d/DBoW2) library to perform place recognition and [g2o](https://github.com/RainerKuemmerle/g2o) library to perform non-linear optimizations. Both modified libraries (which are BSD) are included in the *Thirdparty* folder.
+## VCPKG (Windows)
+VCPKG contributers made some packages installable that would've been a lot of works to get otherwise. These packages will automatically be installed through build.bat if you have vcpkg.
 
 ## Python
 Required to calculate the alignment of the trajectory with the ground truth. **Required Numpy module**.
@@ -91,6 +82,11 @@ We provide a script `build.sh` to build the *Thirdparty* libraries and *ORB-SLAM
 cd ORB_SLAM3
 chmod +x build.sh
 ./build.sh
+```
+On Windows:
+```
+cd ORB_SLAM3
+./build.bat
 ```
 
 This will create **libORB_SLAM3.so**  at *lib* folder and the executables in *Examples* folder.
@@ -233,3 +229,21 @@ A flag in `include\Config.h` activates time measurements. It is necessary to unc
 
 # 9. Calibration
 You can find a tutorial for visual-inertial calibration and a detailed description of the contents of valid configuration files at  `Calibration_Tutorial.pdf`
+
+# 10. Todo
+
+* All optimization libraries should be built by default and give a warning if they're not built right.
+* Better Python dataset maker: Python can download youtube videos for ORB/DBow2 keypoint files, as well as create videos with frame-skips inside them. Dataset->vid should also have better frame skipping.
+* Calibration updates: There are new python files in Examples/Calibration for calibrating monocular cameras. Ideally, this should be moved into its own repository and include IMU, stereo camears, etc. Then,, the calibration instructions will just be `pip install calslam & calslam -h`
+* DBow2 loader time-remaining. This takes a few minutes on startup, so percent done info would be useful.
+* ZMQ/Shared Memory/ROS transport:
+  * ZMQ tear apart: Any ROS nodes should optionally also support ZMQ. The various SLAM modules can be seperated and allow for swapping or adding parts.
+  * Boost shared memory tear apart: everything shared through ZMQ communication should also allow shared memory, which should be faster.
+* Example ZMQ/shared memory system runners: Since different parts of the slam system could be exchanged, there need to be a few default files so people can run the whole thing.
+* DBow2 should be replaced with FAISS so keypoint database size isn't restricted to RAM size and doesn't hog RAM
+* Use algorithm in svg-loop to build up orb kp database for DBOW2/FAISS that excludes things that move like people
+* Add semantic segmentation & CNNs for scene recognition, similar to svg-loop
+* Option to Replace loop closure system with a massive Neural Magic predictive RNN, potentially with PPO (non-euclidian SLAM, such as large seasonal differences in environments)
+* Replace ORB with other keypoint systems, including Modern learned CNN or Swin transformer methods.
+
+

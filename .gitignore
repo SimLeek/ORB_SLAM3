@@ -98,3 +98,7 @@ my_settings.txt
 borrar/*
 
 */ExecMean.txt
+
+#ignore the large calibration maps and vocab files
+*.pickle
+*.yml.gz
