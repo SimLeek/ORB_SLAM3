@@ -1,7 +1,8 @@
 cmake_minimum_required( VERSION 3.7.0 )
-
-#set(CMAKE_TOOLCHAIN_FILE "C:/Users/?/code/vcpkg/scripts/buildsystems/vcpkg.cmake")
-
+message("CMAKE_TOOLCHAIN_FILE: ")
+message (${CMAKE_TOOLCHAIN_FILE})
+#set(CMAKE_TOOLCHAIN_FILE "C:/Users/joshm/code/vcpkg/scripts/buildsystems/vcpkg.cmake")
+include("C:/Users/joshm/code/vcpkg/scripts/buildsystems/vcpkg.cmake")
 project( Thirdparty )
 
 find_package(Git)
@@ -20,6 +21,13 @@ set(INSTALL_STEP "2" CACHE STRING "Which install step are we on?")
 
 set($ENV{EIGEN3_ROOT_DIR} "${CMAKE_BINARY_DIR}/build/thirdparty")
 
+IF (WIN32)
+  find_package(Pangolin CONFIG REQUIRED)
+  find_package(OpenCV CONFIG REQUIRED)
+  #find_package(BLAS CONFIG REQUIRED)
+  #message("BLAS: ")
+  #message(${BLAS_DIR})
+endif()
 
 if("${INSTALL_STEP}" EQUAL "1")
 #externalproject_add(
@@ -36,12 +44,10 @@ if("${INSTALL_STEP}" EQUAL "1")
 #      -DEIGEN_BUILD_TESTING=OFF
 #      -DBUILD_TESTING:BOOL=OFF
 #      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
+#      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
 #)
 
 IF (WIN32)
-  find_package(Pangolin CONFIG REQUIRED)
-  find_package(OpenCV CONFIG REQUIRED)
-
 ELSE (WIN32)
 externalproject_add(
     pangolin 
@@ -102,19 +108,6 @@ ENDIF (WIN32)
 #      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
 #)
 
-# luckily, someone already updated it to the latest opencv for me. :3
-#externalproject_add(
-#    DLib  
-#    GIT_REPOSITORY "https://github.com/kerolex/DLib.git"
-#    GIT_TAG "335311a16f788f283e2f9a4cd2b6dec9dd5bf5b7"
-#    SOURCE_DIR DLib
-#    BINARY_DIR DLib-build
-#    INSTALL_DIR DLib-install
-#    CMAKE_ARGS
-#      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
-#      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
-#      )
-
 #externalproject_add(
 #    FMT   
 #    GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
@@ -124,6 +117,7 @@ ENDIF (WIN32)
 #    INSTALL_DIR FMT-install
 #    CMAKE_ARGS
 #      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
+#      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
 #)
 elseif("${INSTALL_STEP}" EQUAL "2")
 # this fork has a fix for a loading issue that makes decent sized databases take up to a year to load.
@@ -139,55 +133,58 @@ externalproject_add(
       -DBUILD_Demo:BOOL=OFF
       -DBUILD_DBoW2:BOOL=ON
       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
+      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
 )
 
 # note: to get sophus working, I had to add this to its FindEigan3.cmake file:
 #  set(EIGEN3_INCLUDE_DIR "${CMAKE_BINARY_DIR}/../thirdparty/include/eigen3")
 
-#externalproject_add(
-#    Sophus  
-#    GIT_REPOSITORY "https://github.com/strasdat/Sophus.git"
-#    GIT_TAG "v22.10"
-#    SOURCE_DIR Sophus
-#    BINARY_DIR Sophus-build
-#    INSTALL_DIR Sophus-install
-#    CMAKE_ARGS
-#      -DBUILD_SOPHUS_TESTS:BOOL=OFF
-#      -DBUILD_SOPHUS_EXAMPLES:BOOL=OFF
-#      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
-#)
+externalproject_add(
+    Sophus  
+    GIT_REPOSITORY "https://github.com/strasdat/Sophus.git"
+    GIT_TAG "v22.10"
+    SOURCE_DIR Sophus
+    BINARY_DIR Sophus-build
+    INSTALL_DIR Sophus-install
+    CMAKE_ARGS
+      -DBUILD_SOPHUS_TESTS:BOOL=OFF
+      -DBUILD_SOPHUS_EXAMPLES:BOOL=OFF
+      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
+      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
+)
 
-#externalproject_add(
-#    librealsense2  
-#    GIT_REPOSITORY "https://github.com/IntelRealSense/librealsense.git"
-#    GIT_TAG "v2.51.1"
-#    SOURCE_DIR librealsense2
-#    BINARY_DIR librealsense2-build
-#    INSTALL_DIR librealsense2-install
-#    CMAKE_ARGS
-#      -DBUILD_SHARED_LIBS:BOOL=ON
-#      -DBUILD_EXAMPLES:BOOL=OFF
-#      -DBUILD_TESTS:BOOL=OFF
-#      -DCPP11_NO_BOOST:BOOL=ON
-#      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
-#)
+externalproject_add(
+    librealsense2  
+    GIT_REPOSITORY "https://github.com/IntelRealSense/librealsense.git"
+    GIT_TAG "v2.51.1"
+    SOURCE_DIR librealsense2
+    BINARY_DIR librealsense2-build
+    INSTALL_DIR librealsense2-install
+    CMAKE_ARGS
+      -DBUILD_SHARED_LIBS:BOOL=ON
+      -DBUILD_EXAMPLES:BOOL=OFF
+      -DBUILD_TESTS:BOOL=OFF
+      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
+      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
+)
 
 
 
-#externalproject_add(
-#    g2o  
-#    GIT_REPOSITORY "https://github.com/RainerKuemmerle/g2o.git"
-#    GIT_TAG "20201223_git"
-#    SOURCE_DIR g2o
-#    BINARY_DIR g2o-build
-#    INSTALL_DIR g2o-install
-#    CMAKE_ARGS
-#      -DG2O_FAST_MATH:BOOL=ON
-#      -DBUILD_SHARED_LIBS:BOOL=ON
-#      -DG2O_BUILD_EXAMPLES:BOOL=OFF
-#      -DG2O_BUILD_APPS:BOOL=OFF
-#      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
-#)
+externalproject_add(
+    g2o  
+    GIT_REPOSITORY "https://github.com/RainerKuemmerle/g2o.git"
+    GIT_TAG "20201223_git"
+    SOURCE_DIR g2o
+    BINARY_DIR g2o-build
+    INSTALL_DIR g2o-install
+    CMAKE_ARGS
+      -DG2O_FAST_MATH:BOOL=ON
+      -DBUILD_SHARED_LIBS:BOOL=ON
+      -DG2O_BUILD_EXAMPLES:BOOL=OFF
+      -DG2O_BUILD_APPS:BOOL=OFF
+      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
+      -DCMAKE_TOOLCHAIN_FILE:string=${CMAKE_TOOLCHAIN_FILE}
+)
 
 endif()
 #set(GLEW_INCLUDE_DIR, "/glew-2.0.0/include/")

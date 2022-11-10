@@ -96,7 +96,8 @@
         "*.ipp": "cpp",
         "alignedvector3": "cpp",
         "fft": "cpp",
-        "*.expression": "cpp"
+        "*.expression": "cpp",
+        "shared_mutex": "cpp"
     },
     "task.allowAutomaticTasks": "on",
     "cmake.toolset": "x64",

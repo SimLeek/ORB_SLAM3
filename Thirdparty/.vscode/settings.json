@@ -1,6 +1,6 @@
 {
     "cmake.configureSettings": {
-        "INSTALL_STEP": "2",
+        "INSTALL_STEP": "1",
         "CMAKE_TOOLCHAIN_FILE" : "C:/Users/${env:USERNAME}/code/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     "files.associations": {

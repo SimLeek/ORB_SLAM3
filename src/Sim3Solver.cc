@@ -26,7 +26,7 @@
 #include "KeyFrame.h"
 #include "ORBmatcher.h"
 
-#include "DUtils/Random.h"
+#include "Random.h"
 
 namespace ORB_SLAM3
 {
@@ -84,8 +84,8 @@ Sim3Solver::Sim3Solver(KeyFrame *pKF1, KeyFrame *pKF2, const std::vector<MapPoin
             if(bDifferentKFs)
                 pKFm = vpKeyFrameMatchedMP[i1];
 
-            int indexKF1 = get<0>(pMP1->GetIndexInKeyFrame(pKF1));
-            int indexKF2 = get<0>(pMP2->GetIndexInKeyFrame(pKFm));
+            int indexKF1 = std::get<0>(pMP1->GetIndexInKeyFrame(pKF1));
+            int indexKF2 = std::get<0>(pMP2->GetIndexInKeyFrame(pKFm));
 
             if(indexKF1<0 || indexKF2<0)
                 continue;
@@ -174,7 +174,7 @@ Eigen::Matrix4f Sim3Solver::iterate(int nIterations, bool &bNoMore, std::vector<
         // Get min set of points
         for(short i = 0; i < 3; ++i)
         {
-            int randi = DUtils::Random::RandomInt(0, vAvailableIndices.size()-1);
+            int randi = Random<int>().DrawNumber(0, vAvailableIndices.size()-1);
 
             int idx = vAvailableIndices[randi];
 
@@ -247,7 +247,7 @@ Eigen::Matrix4f Sim3Solver::iterate(int nIterations, bool &bNoMore, std::vector<
         // Get min set of points
         for(short i = 0; i < 3; ++i)
         {
-            int randi = DUtils::Random::RandomInt(0, vAvailableIndices.size()-1);
+            int randi = Random<int>().DrawNumber(0, vAvailableIndices.size()-1);
 
             int idx = vAvailableIndices[randi];
 

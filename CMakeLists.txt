@@ -10,12 +10,13 @@ include(GenerateExportHeader)
 
 if(MSVC)
   add_compile_options(/bigobj)
+  add_compile_options(/Zc:__cplusplus) # required to compile fmt correctly since it uses this to determine between new and deprecated code
   add_compile_options(/Zi) # edit and continue option. Instead of waiting an hour for this large project to re-compile.
 else ()
   add_compile_options(-Wa -mbig-obj)
 endif ()
 
-set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD 17) # 17 is the max standard we can use while still importing fmt, because fmt uses std::result_of, which is removed in c++20
 
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Release)
@@ -181,15 +182,19 @@ find_package(Boost REQUIRED serialization)
 find_package(OpenSSL REQUIRED)
 find_package(g2o REQUIRED)
 find_package(DBoW2 REQUIRED)
-find_package(DLib REQUIRED)
+# Was literally just needed for the randint function... wtf.
+#find_package(DLib REQUIRED)
 find_package(fmt REQUIRED)
+
+#message("DLIB LIBS:")
+#message("${DLib_LIBRARIES}")
+
 
 target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
 ${DBoW2_LIBRARIES}
-${DLib_LIBRARIES}
 g2o::stuff
 g2o::opengl_helper
 g2o::core

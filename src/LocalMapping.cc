@@ -977,7 +977,7 @@ void LocalMapping::KeyFrameCulling()
                             if(pKFi==pKF)
                                 continue;
                             std::tuple<int,int> indexes = mit->second;
-                            int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+                            int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
                             int scaleLeveli = -1;
                             if(pKFi -> NLeft == -1)
                                 scaleLeveli = pKFi->mvKeysUn[leftIndex].octave;

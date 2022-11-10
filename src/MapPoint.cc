@@ -151,10 +151,10 @@ void MapPoint::AddObservation(KeyFrame* pKF, int idx)
     }
 
     if(pKF -> NLeft != -1 && idx >= pKF -> NLeft){
-        get<1>(indexes) = idx;
+        std::get<1>(indexes) = idx;
     }
     else{
-        get<0>(indexes) = idx;
+        std::get<0>(indexes) = idx;
     }
 
     mObservations[pKF]=indexes;
@@ -173,7 +173,7 @@ void MapPoint::EraseObservation(KeyFrame* pKF)
         if(mObservations.count(pKF))
         {
             std::tuple<int,int> indexes = mObservations[pKF];
-            int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+            int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
 
             if(leftIndex != -1){
                 if(!pKF->mpCamera2 && pKF->mvuRight[leftIndex]>=0)
@@ -226,7 +226,7 @@ void MapPoint::SetBadFlag()
     for(std::map<KeyFrame*, std::tuple<int,int>>::iterator mit=obs.begin(), mend=obs.end(); mit!=mend; mit++)
     {
         KeyFrame* pKF = mit->first;
-        int leftIndex = get<0>(mit -> second), rightIndex = get<1>(mit -> second);
+        int leftIndex = std::get<0>(mit -> second), rightIndex = std::get<1>(mit -> second);
         if(leftIndex != -1){
             pKF->EraseMapPointMatch(leftIndex);
         }
@@ -269,7 +269,7 @@ void MapPoint::Replace(MapPoint* pMP)
         KeyFrame* pKF = mit->first;
 
         std::tuple<int,int> indexes = mit -> second;
-        int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+        int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
 
         if(!pMP->IsInKeyFrame(pKF))
         {
@@ -351,7 +351,7 @@ void MapPoint::ComputeDistinctiveDescriptors()
 
         if(!pKF->isBad()){
             std::tuple<int,int> indexes = mit -> second;
-            int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+            int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
 
             if(leftIndex != -1){
                 vDescriptors.push_back(pKF->mDescriptors.row(leftIndex));
@@ -455,7 +455,7 @@ void MapPoint::UpdateNormalAndDepth()
         KeyFrame* pKF = mit->first;
 
         std::tuple<int,int> indexes = mit -> second;
-        int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+        int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
 
         if(leftIndex != -1){
             Eigen::Vector3f Owi = pKF->GetCameraCenter();
@@ -475,7 +475,7 @@ void MapPoint::UpdateNormalAndDepth()
     const float dist = PC.norm();
 
     std::tuple<int ,int> indexes = observations[pRefKF];
-    int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+    int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
     int level;
     if(pRefKF -> NLeft == -1){
         level = pRefKF->mvKeysUn[leftIndex].octave;
@@ -558,7 +558,7 @@ void MapPoint::PrintObservations()
     {
         KeyFrame* pKFi = mit->first;
         std::tuple<int,int> indexes = mit->second;
-        int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+        int leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
         std::cout << "--OBS in KF " << pKFi->mnId << " in map " << pKFi->GetMap()->GetId() << std::endl;
     }
 }
@@ -589,8 +589,8 @@ void MapPoint::PreSave(std::set<KeyFrame*>& spKF,std::set<MapPoint*>& spMP)
         KeyFrame* pKFi = it->first;
         if(spKF.find(pKFi) != spKF.end())
         {
-            mBackupObservationsId1[it->first->mnId] = get<0>(it->second);
-            mBackupObservationsId2[it->first->mnId] = get<1>(it->second);
+            mBackupObservationsId1[it->first->mnId] = std::get<0>(it->second);
+            mBackupObservationsId2[it->first->mnId] = std::get<1>(it->second);
         }
         else
         {

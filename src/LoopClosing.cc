@@ -787,7 +787,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
                                 }
 
                                 std::tuple<size_t,size_t> indexes = pMPi->GetIndexInKeyFrame(pKFi);
-                                int index = get<0>(indexes);
+                                int index = std::get<0>(indexes);
                                 if(index >= 0)
                                 {
                                     int coord_x = pKFi->mvKeysUn[index].pt.x;

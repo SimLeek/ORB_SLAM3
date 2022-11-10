@@ -309,7 +309,7 @@ void KeyFrame::EraseMapPointMatch(const int &idx)
 void KeyFrame::EraseMapPointMatch(MapPoint* pMP)
 {
     std::tuple<size_t,size_t> indexes = pMP->GetIndexInKeyFrame(this);
-    size_t leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
+    size_t leftIndex = std::get<0>(indexes), rightIndex = std::get<1>(indexes);
     if(leftIndex != -1)
         mvpMapPoints[leftIndex]=static_cast<MapPoint*>(NULL);
     if(rightIndex != -1)
